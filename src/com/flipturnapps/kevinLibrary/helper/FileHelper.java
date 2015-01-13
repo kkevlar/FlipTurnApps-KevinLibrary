@@ -2,6 +2,7 @@ package com.flipturnapps.kevinLibrary.helper;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class FileHelper 
 {
@@ -24,6 +25,20 @@ public class FileHelper
 		}
 		return strings2;
 
+	}
+	public static String getAppDataDir(String devName, String appName)
+	{
+		String os = System.getProperty("os.name","generic").toLowerCase(Locale.ENGLISH);
+		String home = System.getProperty("user.home");
+		if ((os.indexOf("mac") >= 0) || (os.indexOf("darwin") >= 0)) {
+			return home + "/Library/Application Support/"+ devName +"/"+appName+"/" ;
+		} else if (os.indexOf("win") >= 0) {
+			return home + "/AppData/Roaming/"+ devName +"/"+appName+"/" ;
+		} else if (os.indexOf("nux") >= 0) {
+			return home + "/."+ devName +"/"+appName+"/"  ;
+		} else {
+			return "/"+ devName +"/"+appName+"/"  ;
+		}
 	}
 
 
