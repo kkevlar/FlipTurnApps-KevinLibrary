@@ -24,9 +24,9 @@ public class UserIOFrame extends JFrame {
 
 	public UserIOFrame ()
 	{
-		this("");
+		this("",false);
 	}	
-	public UserIOFrame(String title)
+	public UserIOFrame(String title, boolean icon)
 	{
 		super(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,10 +52,10 @@ public class UserIOFrame extends JFrame {
 		southPanel.setVisible(false);
 		southPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(southPanel, BorderLayout.SOUTH);
+
+		if(icon)
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("icon.png")));
 		
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("icon.png")));
-
-
 	}
 	public void refreshFrame()
 	{
