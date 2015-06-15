@@ -8,13 +8,11 @@ public abstract class CharacterBrokenCommandParser extends CommandParser {
 	public CharacterBrokenCommandParser(ArrayList<Command> commands) 
 	{
 		super(commands);
-		// TODO Auto-generated constructor stub
 	}
 
 	public CharacterBrokenCommandParser(Command[] commands) 
 	{
 		super(commands);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -25,26 +23,26 @@ public abstract class CharacterBrokenCommandParser extends CommandParser {
 		else
 		{
 			try
-		{
-			String noSlashString = commandString.substring(this.getStartingCharacters().length());
-			String[] commandChuncks = noSlashString.split(this.getSplittingCharacters());
-			String[] params = new String[commandChuncks.length - 1];
-			String commandName = commandChuncks[0];
-			for(int i = 0; i < params.length; i++)
 			{
-				params[i] = commandChuncks[i+1];
+				String noSlashString = commandString.substring(this.getStartingCharacters().length());
+				String[] commandChuncks = noSlashString.split(this.getSplittingCharacters());
+				String[] params = new String[commandChuncks.length - 1];
+				String commandName = commandChuncks[0];
+				for(int i = 0; i < params.length; i++)
+				{
+					params[i] = commandChuncks[i+1];
+				}
+				CommandWrapper wrapper = new CommandWrapper();
+				wrapper.setCommand(this.getCommand(commandName, params));
+				wrapper.setCommandName(commandName);
+				wrapper.setParamaters(params);
+				return wrapper;
 			}
-			CommandWrapper wrapper = new CommandWrapper();
-			wrapper.setCommand(this.getCommand(commandName, params));
-			wrapper.setCommandName(commandName);
-			wrapper.setParamaters(params);
-			return wrapper;
-		}
-		catch(RuntimeException ex)
-		{
-			
-			throw new CommandParseException(commandString);
-		}
+			catch(RuntimeException ex)
+			{
+
+				throw new CommandParseException(commandString);
+			}
 		}
 	}
 

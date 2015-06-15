@@ -20,7 +20,7 @@ public class CommandExecutor
 	}
 	public CommandExecutor(Command[] commandsArray)
 	{
-		ArrayList<Command> commands = new ArrayList<Command>();
+		commands = new ArrayList<Command>();
 		for (int i = 0; i < commandsArray.length; i++) 
 		{
 			this.commands.add(commandsArray[i]);
