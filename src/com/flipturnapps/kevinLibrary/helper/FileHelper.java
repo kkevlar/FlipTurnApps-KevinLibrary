@@ -1,6 +1,7 @@
 package com.flipturnapps.kevinLibrary.helper;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -40,7 +41,10 @@ public class FileHelper
 			return "/"+ devName +"/"+appName+"/"  ;
 		}
 	}
-
+	public static File getThisJarDir(Class aClass) throws URISyntaxException
+	{
+		return new File(aClass.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+	}
 
 
 }
