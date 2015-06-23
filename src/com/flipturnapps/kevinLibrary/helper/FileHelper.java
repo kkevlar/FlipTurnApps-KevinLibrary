@@ -43,7 +43,7 @@ public class FileHelper
 	}
 	public static File getThisJarDir(Class aClass) throws URISyntaxException
 	{
-		return new File(aClass.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+		return new File(aClass.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
 	}
 
 
