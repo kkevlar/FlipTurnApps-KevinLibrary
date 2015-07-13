@@ -27,6 +27,19 @@ public class FileHelper
 		return strings2;
 
 	}
+	public static String fileInDir(File d, String s)
+	{
+		return fileInDir(d.getAbsolutePath(),s);
+	}
+	public static String fileInDir(String d, String s)
+	{
+		if(d.endsWith("/") && s.startsWith("/"))
+			return d + s.substring(1);
+		else if(d.endsWith("/") || s.startsWith("/"))
+			return (d + s);
+		else
+			return d + "/" + s;
+	}
 	public static String getAppDataDir(String devName, String appName)
 	{
 		String os = System.getProperty("os.name","generic").toLowerCase(Locale.ENGLISH);
