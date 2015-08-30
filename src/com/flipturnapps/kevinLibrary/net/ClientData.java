@@ -25,7 +25,7 @@ public abstract class ClientData
 		this.socket = socket;
 		this.reader = new ClientReader(socket);
 		this.writer = new FlushWriter(socket.getOutputStream());
-		this.server = server;
+		this.setServer(server);
 		this.setRegularClient(true);
 		new Thread(new AutoDisconnecter()).start();
 	}
@@ -78,7 +78,7 @@ public abstract class ClientData
 			}
 		}
 		else
-			server.newMessage(this,read.substring(1));
+			getServer().newMessage(this,read.substring(1));
 	}
 	
 	public void sendHeartbeat()
@@ -102,7 +102,7 @@ public abstract class ClientData
 	}
 	public void disconnect() throws IOException
 	{
-		server.clientDisconnected(this);
+		getServer().clientDisconnected(this);
 		writer.println(">dis");
 		writer.close();
 		reader.stop();
@@ -138,6 +138,12 @@ public abstract class ClientData
 	}
 	public static void setAutoDisconnectWaitTime(long autoDisconnectWaitTime) {
 		ClientData.autoDisconnectWaitTime = autoDisconnectWaitTime;
+	}
+	protected KServer<?> getServer() {
+		return server;
+	}
+	protected void setServer(KServer<?> server) {
+		this.server = server;
 	}
 	
 	
