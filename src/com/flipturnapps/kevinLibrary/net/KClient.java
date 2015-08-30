@@ -35,7 +35,7 @@ public abstract class KClient extends Socket
 				disconnect();
 			}
 			else
-				readMessage(read.substring(1));
+				readMessage(read);
 
 		}
 

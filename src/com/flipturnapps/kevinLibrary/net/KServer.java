@@ -66,7 +66,7 @@ public abstract class KServer<E extends ClientData> extends ServerSocket
 	}
 	public void sendMessage(E data, String message)
 	{
-		data.sendMessage(">" + message);
+		data.sendMessage(message);
 	}
 	public void stopAccepting()
 	{
