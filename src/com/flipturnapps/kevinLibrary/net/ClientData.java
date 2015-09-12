@@ -78,7 +78,7 @@ public abstract class ClientData
 			}
 		}
 		else
-			getServer().newMessage(this,read.substring(1));
+			getServer().newMessage(this,read);
 	}
 	
 	public void sendHeartbeat()
