@@ -157,13 +157,16 @@ public abstract class KServer<E extends ClientData> extends ServerSocket
 	@Override
 	public void close() throws IOException
 	{
-		for(int i = 0; i < clients.size(); i++)
+		if(clients != null)
 		{
-			clients.get(i).disconnect();
+			for(int i = 0; i < clients.size(); i++)
+			{
+				clients.get(i).disconnect();
+			}
+			this.stopAccepting();
+			this.setShouldDisconnectClients(false);
+			clients.clear();
 		}
-		this.stopAccepting();
-		this.setShouldDisconnectClients(false);
-		clients.clear();
 		super.close();
 	}
 	protected abstract void newClient(E data);
