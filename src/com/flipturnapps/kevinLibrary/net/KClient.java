@@ -48,7 +48,7 @@ public abstract class KClient extends Socket
 	protected abstract void readMessage(String read);
 	public void sendMessage(String message)
 	{
-		writer.println(">" + message);
+		writer.println(message);
 	}
 	public void disconnect()
 	{
