@@ -14,7 +14,7 @@ public abstract class CommandParser extends CommandExecutor
 		super(commands);
 	}
 	public abstract CommandWrapper parseAsCommand(String commandString) throws CommandParseException, NonExistentCommandException;
-	public Object runCommand(String commandString, CommandSpeaker speaker, Object data) throws IncorrectDataException, CommandParseException, NonExistentCommandException
+	public Object runCommand(String commandString, CommandIO speaker, Object data) throws IncorrectDataException, CommandParseException, NonExistentCommandException
 	{
 		CommandWrapper wrapper = this.parseAsCommand(commandString);
 		return this.executeCommand(wrapper.getCommand(),wrapper.getCommandName(),wrapper.getParamaters(),speaker, data);

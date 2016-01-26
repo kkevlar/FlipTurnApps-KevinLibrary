@@ -1,15 +1,11 @@
 package com.flipturnapps.kevinLibrary.command;
 
-public abstract class HelpCommand extends OutputSimpleCommand {
+public abstract class HelpCommand extends SimpleCommand {
 
 
 	private int listSize;
 	private boolean disabled;
-	public HelpCommand(CommandOutput output) {
-		super(output);
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -53,7 +49,8 @@ public abstract class HelpCommand extends OutputSimpleCommand {
 	}
 
 	@Override
-	public Object execute(String commandName, String[] params, Object data) {
+	public Object execute(String commandName, String[] params, CommandIO io, Object data) 
+	{
 		
 		if(params.length > 0)
 		{
@@ -65,14 +62,14 @@ public abstract class HelpCommand extends OutputSimpleCommand {
 		try {
 			help = this.getCommandExecutor().getCommand(params[0], helpParams);
 		} catch (NonExistentCommandException e) {
-			this.getCommandOutput().println("Command \"" + params[0] + "\" does not exist." );
+			io.println("Command \"" + params[0] + "\" does not exist." );
 			return data;
 		}
-		this.getCommandOutput().println(help.getHelpText());
+		io.println(help.getHelpText());
 		}
 		else
 		{
-			this.getCommandOutput().println(this.getCommandList().toString());
+			io.println(this.getCommandList().toString());
 		}
 		return data;
 	}
@@ -101,7 +98,7 @@ public abstract class HelpCommand extends OutputSimpleCommand {
 
 	@Override
 	public int canExecute(String commandName, String[] params,
-			CommandSpeaker speaker, Object data) {
+			CommandIO speaker, Object data) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import com.flipturnapps.kevinLibrary.helper.ArrayHelper;
 import com.flipturnapps.kevinLibrary.helper.ArrayListHelper;
 
-public abstract class SimpleCommand implements Command {
+public abstract class SimpleCommand implements Command 
+{
 
 	private CommandExecutor executor;
 	@Override
@@ -14,7 +15,7 @@ public abstract class SimpleCommand implements Command {
 		return this.getName();
 	}
 	@Override
-	public int canExecute(String commandName, String[] params, CommandSpeaker speaker, Object data) 
+	public int canExecute(String commandName, String[] params, CommandIO speaker, Object data) 
 	{
 
 		if(!objectDataOK(data))
@@ -23,6 +24,11 @@ public abstract class SimpleCommand implements Command {
 			return Command.NAME_INCORRECT;
 		if(params.length > this.getMaximumParams() || params.length < this.getMinimumParams())
 			return Command.PARAMS_INCORRECT;
+		if(this.needsIO() || this.permProtected())
+		{
+			if(speaker == null)
+				return Command.IO_NULL;
+		}
 		if(this.permProtected())
 		{
 			if(!(ArrayListHelper.someOverlap(this.getPermissionsCanHave(), speaker.getPermsOwned()) || speaker.getPermsOwned().contains("op")))	
@@ -32,6 +38,7 @@ public abstract class SimpleCommand implements Command {
 	}
 	public abstract boolean objectDataOK(Object data);
 	public abstract boolean permProtected();
+	public abstract boolean needsIO();
 	@Override
 	public boolean namesMatch(String commandName, String[] params) 
 	{
