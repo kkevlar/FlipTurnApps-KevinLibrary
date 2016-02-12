@@ -9,6 +9,7 @@ public interface Command
 	public static final int NAME_INCORRECT = 2;
 	public static final int DATA_INCORRECT = 3;
 	public static final int PERMISSIONS_INCORRECT = 4;
+	public static final int IO_NULL = 5;
 	public String getName();
 	public String getHelpText();
 	public int getMaximumParams();
@@ -17,9 +18,9 @@ public interface Command
 	public void interceptCommand(Command command, String[] params);
 	public int getInterceptPriority();
 	public String[] getAliases();
-	public Object execute(String commandName, String[] params, Object data);
+	public Object execute(String commandName, String[] params, CommandIO speaker, Object data);
 	public boolean namesMatch(String commandName, String[] params);
-	public int canExecute(String commandName, String[] params, CommandSpeaker speaker, Object data);
+	public int canExecute(String commandName, String[] params, CommandIO speaker, Object data);
 	public void setCommandExecutor(CommandExecutor executor);
 	public CommandExecutor getCommandExecutor();
 	public ArrayList<String> getPermissionsCanHave();

@@ -50,18 +50,20 @@ public class CommandExecutor
 		else
 			throw new NonExistentCommandException(commandName, params);
 	}
-	public Object executeCommand(Command command, String commandName, String[] params, CommandSpeaker speaker, Object data) throws IncorrectDataException 
+	public Object executeCommand(Command command, String commandName, String[] params, CommandIO speaker, Object data) throws IncorrectDataException 
 	{
 		if(!this.runIntercepts(command, commandName, params, data))
 		{
 			if(command.canExecute(commandName, params, speaker, data) == Command.CAN_EXECUTE)
-				return command.execute(commandName, params, data);
+				return command.execute(commandName, params, speaker, data);
 			else if(command.canExecute(commandName, params, speaker, data) == Command.DATA_INCORRECT)
 				throw new IncorrectDataException(commandName, params, data, Command.DATA_INCORRECT);
 			else if(command.canExecute(commandName, params, speaker, data) == Command.NAME_INCORRECT)
 				throw new IncorrectDataException(commandName, params, data, Command.NAME_INCORRECT);
 			else if(command.canExecute(commandName, params, speaker, data) == Command.PARAMS_INCORRECT)
 				throw new IncorrectDataException(commandName, params, data, Command.PARAMS_INCORRECT);
+			else if(command.canExecute(commandName, params, speaker, data) == Command.IO_NULL)
+				throw new IncorrectDataException(commandName, params, data, Command.IO_NULL);
 			else if(command.canExecute(commandName, params, speaker, data) == Command.PERMISSIONS_INCORRECT)
 				throw new IncorrectDataException(commandName, params, data, Command.PERMISSIONS_INCORRECT);
 		}
