@@ -3,6 +3,7 @@ package com.flipturnapps.kevinLibrary.sprite;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Vector;
 
 
 public abstract class PositionSprite extends Sprite {
@@ -43,7 +44,7 @@ public abstract class PositionSprite extends Sprite {
 	private void setUp() 
 	{
 		this.setIsPositionSprite(true);
-		
+		this.setSolid(false);
 	}
 	public PositionSprite(int x , int y, int width, int height)
 	{
@@ -329,5 +330,45 @@ public abstract class PositionSprite extends Sprite {
 	{
 		return new Point(this.getCenterX(),this.getCenterY());
 	}
+	public void vectorMove(double radians, double magnitude)
+	{
+		this.setX((int) (this.getX() + magnitude * Math.cos(radians)));
+		this.setY((int) (this.getY() - magnitude * Math.sin(radians)));
+		//System.out.println("       " + Math.sin(radians));
+	}
+	public double angleTowardsCenterFromCenter(PositionSprite sprite)
+	{
+		double angle = arcTan(sprite.getCenterX(),sprite.getCenterY(),this.getCenterX(), this.getCenterY());
+		//System.out.println(Math.toDegrees(angle));
+		return angle;
+	}
+	public double angleTowards(PositionSprite sprite)
+	{
+		return this.angleTowards(sprite.getX(), sprite.getY());
+	}
+	public double angleTowards(int pX, int pY)
+	{
+		return arcTan(pX,pY,this.getX(),this.getY());
+	}
+	public double angleTowardsFromCenter(double d, double e)
+	{
+		return arcTan(d, e, this.getCenterX(), this.getCenterY());
+	}
+	private double arcTan(double xO, double yO, int xME, int yME) 
+	{
+		double x = xO - xME;
+		double y = -yO + yME;
+		int mult = 1;
+		
+		if(x != 0)
+			return mult * Math.atan2(y, x);
+		else
+			return mult;
+	}
+	public void moveTowards(PositionSprite sprite, double magnitude)
+	{
+		this.vectorMove(this.angleTowardsCenterFromCenter(sprite), magnitude);
+	}
+	
 }
 	
