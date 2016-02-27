@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import com.flipturnapps.kevinLibrary.gui.KJPanel;
 import com.flipturnapps.kevinLibrary.helper.KevinColor;
 
-public class SpritePanel extends KJPanel {
+public class SpritePanel extends KJPanel 
+{
 	/**
 	 * 
 	 */

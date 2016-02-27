@@ -23,8 +23,11 @@ public abstract class PositionSprite extends Sprite {
 	public static final int RECT = 1;
 	public static final int CIRCLE = 0;
 	private boolean solid = false;
+	private int posSpriteId;
+	private static int lastPosSpriteId;
 	
-	public PositionSprite() {
+	public PositionSprite() 
+	{
 		super();
 		this.setAll(0,0,50,50);
 		setUp();
@@ -45,6 +48,7 @@ public abstract class PositionSprite extends Sprite {
 	{
 		this.setIsPositionSprite(true);
 		this.setSolid(false);
+		this.setPosSpriteId(lastPosSpriteId++);
 	}
 	public PositionSprite(int x , int y, int width, int height)
 	{
@@ -368,6 +372,12 @@ public abstract class PositionSprite extends Sprite {
 	public void moveTowards(PositionSprite sprite, double magnitude)
 	{
 		this.vectorMove(this.angleTowardsCenterFromCenter(sprite), magnitude);
+	}
+	public int getPosSpriteId() {
+		return posSpriteId;
+	}
+	public void setPosSpriteId(int posSpriteId) {
+		this.posSpriteId = posSpriteId;
 	}
 	
 }
