@@ -18,7 +18,7 @@ public abstract class Sprite implements Serializable
 	{
 		this.setIsPositionSprite(true);
 	}
-	void setPanel(SpritePanel p)
+	protected void setPanel(SpritePanel p)
 	{
 		panel = p;
 	}

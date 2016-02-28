@@ -6,18 +6,13 @@ import com.flipturnapps.kevinLibrary.sprite.SpritePanel;
 public abstract class NetworkedSpritePanel extends SpritePanel 
 {
 	public static final String instructionParseSeparator = "~-~";
-	private NetworkedSpritePanelOutput output;
-	public NetworkedSpritePanel(NetworkedSpritePanelOutput output)
+	public NetworkedSpritePanel()
 	{
-		this.output = output;
+		
 	}
 	public void recievedUnpackedInstruction(String inst)
 	{
 		
-	}
-	public interface NetworkedSpritePanelOutput
-	{
-		public void sendUnpackedInstrution(String inst);
 	}
 	public void createNewSpriteWithId(int id, String[] params) 
 	{
@@ -26,5 +21,7 @@ public abstract class NetworkedSpritePanel extends SpritePanel
 		this.add(sprite);
 	}
 	
-	public abstract PositionSprite createNewSprite(String[] params);
+	public abstract NetPositionSprite createNewSprite(String[] params);
+	
+	public abstract void sendUnpackedInstruction(String string);
 }
