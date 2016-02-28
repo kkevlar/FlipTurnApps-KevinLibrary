@@ -1,5 +1,6 @@
 package com.flipturnapps.kevinLibrary.sprite.physics;
 
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import com.flipturnapps.kevinLibrary.sprite.PositionSprite;
@@ -7,15 +8,21 @@ import com.flipturnapps.kevinLibrary.sprite.PositionSprite;
 public abstract class PhysicsSprite extends PositionSprite 
 {
 	private ArrayList<Force> forces = new ArrayList<Force>();
-	private double netAMag;
-	private double netADir;
-	private double netVMag;
-	private double netVDir;
+	private double netAccelMagnitude;
+	private double netAccelDir;
+	private double netVelMagnitude;
+	private double netVelDir;
 	private long lastUpdate;
-	private double speedMult;
+	private double speedMult = 1;
+	private double mass;
+	private double comX;
+	private double comY;
+	private boolean comSet = false;
 	public PhysicsSprite ()
 	{
 		lastUpdate = System.currentTimeMillis();
+		System.out.println((Toolkit.getDefaultToolkit().getScreenResolution())+"");
+		speedMult = Toolkit.getDefaultToolkit().getScreenResolution() * 12 * 3;
 	}
 	private void sumForces()
 	{
@@ -24,26 +31,28 @@ public abstract class PhysicsSprite extends PositionSprite
 		for (int i = 0; i < forces.size(); i++) 
 		{
 			Force force = forces.get(i);
-			xComp += force.getMagnitude() * Math.cos(force.getDirection());
-			yComp += force.getMagnitude() * Math.sin(force.getDirection());
+			double magnitude = force.getMagnitude(this);
+			double direction = force.getDirection(this);
+			xComp += magnitude * Math.cos(direction);
+			yComp -= magnitude * Math.sin(direction);
 		}
-		netAMag = Math.sqrt(xComp*xComp + yComp*yComp);
-		netADir = Math.atan2(xComp, yComp);
+		setNetAccelMagnitude(Math.sqrt(xComp*xComp + yComp*yComp)/this.getMass());
+		setNetAccelDir(Math.atan2(yComp, xComp));
 	}
 	public void update()
 	{
 		long millisDelta = System.currentTimeMillis() - lastUpdate;
 		double timeMult = (millisDelta+0.0)/(1000+0.0);
 		sumForces();
-		double vXComp = netVMag * Math.cos(netVDir);
-		double vYComp = netVMag * Math.sin(netVDir);
-		double aXComp = netAMag * Math.cos(netADir);
-		double aYComp = netAMag * Math.sin(netADir);
+		double vXComp = getNetVelMagnitude() * Math.cos(getNetVelDir());
+		double vYComp = getNetVelMagnitude() * Math.sin(getNetVelDir());
+		double aXComp = getNetAccelMagnitude() * Math.cos(getNetAccelDir());
+		double aYComp = getNetAccelMagnitude() * Math.sin(getNetAccelDir());
 		vXComp += aXComp * timeMult;
 		vYComp += aYComp * timeMult;
-		netVMag = Math.sqrt(vXComp*vXComp + vYComp*vYComp);
-		netVDir = Math.atan2(vXComp, vYComp);
-		this.vectorMove(netVDir, netVMag * timeMult * getSpeedMult());
+		setNetVelMagnitude(Math.sqrt(vXComp*vXComp + vYComp*vYComp));
+		setNetVelDir(Math.atan2(vYComp, vXComp));
+		this.vectorMove(getNetVelDir(), getNetVelMagnitude() * timeMult * getSpeedMult());
 		lastUpdate = System.currentTimeMillis();
 	}
 	public ArrayList<Force> getForces()
@@ -61,5 +70,62 @@ public abstract class PhysicsSprite extends PositionSprite
 	public void setSpeedMult(double speedMult) {
 		this.speedMult = speedMult;
 	}
-
+	public double getMass() {
+		return mass;
+	}
+	public void setMass(double mass) {
+		this.mass = mass;
+	}
+	public double getComX() {
+		return comX;
+	}
+	public void setComX(double comX) 
+	{
+		this.comSet = true;
+		this.comX = comX;
+	}
+	public double getComY() {
+		return comY;
+	}
+	public void setComY(double comY)
+	{
+		this.comSet = true;
+		this.comY = comY;
+	}
+	public void setWidth(int w)
+	{
+		super.setWidth(w);
+		if(!comSet && w != 0)
+			comX = (w+0.0)/(2+0.0);
+	}
+	public void setHeight(int h)
+	{
+		super.setHeight(h);
+		if(!comSet && h != 0)
+			comX = (h+0.0)/(2+0.0);
+	}
+	public double getNetAccelMagnitude() {
+		return netAccelMagnitude;
+	}
+	public void setNetAccelMagnitude(double netAccelMagnitude) {
+		this.netAccelMagnitude = netAccelMagnitude;
+	}
+	public double getNetAccelDir() {
+		return netAccelDir;
+	}
+	public void setNetAccelDir(double netAccelDir) {
+		this.netAccelDir = netAccelDir;
+	}
+	public double getNetVelMagnitude() {
+		return netVelMagnitude;
+	}
+	public void setNetVelMagnitude(double netVelMagnitude) {
+		this.netVelMagnitude = netVelMagnitude;
+	}
+	public double getNetVelDir() {
+		return netVelDir;
+	}
+	public void setNetVelDir(double netVelDir) {
+		this.netVelDir = netVelDir;
+	}
 }
