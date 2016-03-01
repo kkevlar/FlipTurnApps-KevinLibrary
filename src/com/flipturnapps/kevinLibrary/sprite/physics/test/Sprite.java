@@ -57,21 +57,21 @@ public class Sprite extends PhysicsSprite implements Force
 		}
 		if (x < 0 && Math.cos(this.getNetVelDir()) < 0)
 		{
-			this.setNetVelDir(this.getNetVelDir() * 3);
+			this.setNetVelDir(Math.atan2(Math.sin(this.getNetVelDir()), -1 * Math.cos(this.getNetVelDir())));
 			this.cutSpeed();
 		}
 		if (x + width > this.getPanelWidth() && Math.cos(this.getNetVelDir()) > 0)
 		{
-			this.setNetVelDir(this.getNetVelDir() * 3);
+			this.setNetVelDir(Math.atan2(Math.sin(this.getNetVelDir()), -1 * Math.cos(this.getNetVelDir())));
 			this.cutSpeed();
 		}
-		this.setNetVelMagnitude(this.getNetVelMagnitude() * .999);
+		//this.setNetVelMagnitude(this.getNetVelMagnitude() );
 		g.setColor(color);
 		g.fillOval(x, y, width, height);
 		
 	}
 	private void cutSpeed() {
-		this.setNetVelMagnitude(this.getNetVelMagnitude() * .75);
+		this.setNetVelMagnitude(this.getNetVelMagnitude() * .9);
 		
 	}
 	private class MouseForce implements Force 
@@ -80,26 +80,55 @@ public class Sprite extends PhysicsSprite implements Force
 
 		public double getMagnitude(PhysicsSprite s)
 		{
-			double numerator = gravitationalConstant * s.getMass() * 0;
-			double x = deltaX(s); 
-			double y = deltaY(s); 
-			double denominator = x*x+y*y;
-			return numerator/denominator;
+			try
+			{
+				double numerator = gravitationalConstant * s.getMass() * 5000;
+				double x = deltaX(s); 
+				double y = deltaY(s); 
+				double denominator = Math.max(x*x+y*y,1000);
+				return numerator/denominator;
+			}
+			catch(Exception ex)
+			{
+				return 0;
+			}
 		}
-		private double deltaY(PhysicsSprite s) 
+		private double deltaY(PhysicsSprite s) throws MouseOutOfFrameException 
 		{
-			return s.getY() + s.getComY() - s.getPanel().getMouseY();
+			return s.getY() + s.getComY() - getMouseY(s);
+			
 		}
-		private double deltaX(PhysicsSprite s)
+		private double getMouseY(PhysicsSprite s) throws MouseOutOfFrameException 
 		{
-			return s.getX() + s.getComX() - s.getPanel().getMouseX();
+			double y =  s.getPanel().getMouseY();
+			testCoord(y);
+			return y;
+		}
+		private void testCoord(double y) throws MouseOutOfFrameException
+		{
+			if(y < 0)
+				throw new MouseOutOfFrameException();
+		}
+		private double deltaX(PhysicsSprite s) throws MouseOutOfFrameException
+		{
+			return s.getX() + s.getComX() - getMouseX(s);
+		}
+		private double getMouseX(PhysicsSprite s) throws MouseOutOfFrameException {
+			double x =  s.getPanel().getMouseX();
+			testCoord(x);
+			return x;
 		}
 
 		@Override
 		public double getDirection(PhysicsSprite s)
 		{
 			double mod = Math.PI;
-			return Math.atan2(-deltaY(s), deltaX(s)) + mod;
+			try {
+				return Math.atan2(-deltaY(s), deltaX(s)) + mod;
+			} catch (MouseOutOfFrameException e) 
+			{
+				return mod;
+			}
 		}
 		public double getGravitationalConstant() 
 		{

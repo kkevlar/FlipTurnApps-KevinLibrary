@@ -35,16 +35,16 @@ public class TestFrame2 extends JFrame
 					force.setGravitationalConstant(50);
 					testSprites.get(x).getForces().add(force);
 					testSprites.get(y).getForces().add(force);
-					force.setSprite(testSprites.get(y));
+					force.setSprite(testSprites.get(x));
 					panel.add(force);
-					System.out.println("hi");
+					//System.out.println("hi");
 				}
 			}
 		}
 		
 		this.getContentPane().add(panel);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(1000,1000);
+		this.setSize(400,400);
 		
 	}
 	

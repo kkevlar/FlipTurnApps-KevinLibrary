@@ -23,7 +23,7 @@ public abstract class PhysicsSprite extends PositionSprite
 	public PhysicsSprite ()
 	{
 		lastUpdate = System.currentTimeMillis();
-		System.out.println((Toolkit.getDefaultToolkit().getScreenResolution())+"");
+		//System.out.println((Toolkit.getDefaultToolkit().getScreenResolution())+"");
 		speedMult = Toolkit.getDefaultToolkit().getScreenResolution() * 12 * 3;
 		this.setOutsideAllowed(true);
 	}
