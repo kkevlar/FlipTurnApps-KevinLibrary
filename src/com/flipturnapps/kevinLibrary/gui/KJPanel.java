@@ -20,6 +20,8 @@ public class KJPanel extends JPanel {
 	private boolean rightMouseDown;
 	private boolean spaceKeyDown;
 	private boolean[] letterKeyDown = new boolean[26];
+	private boolean controlKeyDown;
+	private boolean shiftKeyDown;
 	
 
 	public KJPanel() {
@@ -63,6 +65,14 @@ public class KJPanel extends JPanel {
 	public boolean spaceKeyDown()
 	{
 		return spaceKeyDown;
+	}
+	public boolean controlKeyDown()
+	{
+		return controlKeyDown;
+	}
+	public boolean shiftKeyDown()
+	{
+		return shiftKeyDown;
 	}
 	public boolean centerMouseDown()
 	{
@@ -121,39 +131,47 @@ public class KJPanel extends JPanel {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			String text = ListenerHelper.getText(e);
-			if (text.equalsIgnoreCase("Left"))
+			
+			if (e.getKeyCode() == e.VK_LEFT)
 				leftKeyDown = true;
-			if (text.equalsIgnoreCase("Right"))
+			if (e.getKeyCode() == e.VK_RIGHT)
 				rightKeyDown = true;
-			if (text.equalsIgnoreCase("Up"))
+			if (e.getKeyCode() == e.VK_UP)
 				upKeyDown = true;
-			if (text.equalsIgnoreCase("Down"))
+			if (e.getKeyCode() == e.VK_DOWN)
 				downKeyDown = true;
-			if (text.equalsIgnoreCase("Space"))
+			if (e.getKeyCode() == e.VK_SPACE)
 				spaceKeyDown = true;
+			if(e.getKeyCode() == e.VK_CONTROL)
+				controlKeyDown = true;
+			if(e.getKeyCode() == e.VK_SHIFT)
+				shiftKeyDown = true;
 			for(int i = 0; i < letterKeyDown.length; i++)
 			{
 				if (ListenerHelper.getText(e).equalsIgnoreCase(KevinChars.upalphabet[i] + ""))
 					letterKeyDown[i] = true;
 			}
+			//System.out.println(e.getKeyText(e.getKeyCode()));
 			
 			
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			String text = ListenerHelper.getText(e);
-			if (text.equalsIgnoreCase("Left"))
+			if (e.getKeyCode() == e.VK_LEFT)
 				leftKeyDown = false;
-			if (text.equalsIgnoreCase("Right"))
+			if (e.getKeyCode() == e.VK_RIGHT)
 				rightKeyDown = false;
-			if (text.equalsIgnoreCase("Up"))
+			if (e.getKeyCode() == e.VK_UP)
 				upKeyDown = false;
-			if (text.equalsIgnoreCase("Down"))
+			if (e.getKeyCode() == e.VK_DOWN)
 				downKeyDown = false;
-			if (text.equalsIgnoreCase("Space"))
+			if (e.getKeyCode() == e.VK_SPACE)
 				spaceKeyDown = false;
+			if(e.getKeyCode() == e.VK_CONTROL)
+					controlKeyDown = false;
+			if(e.getKeyCode() == e.VK_SHIFT)
+				shiftKeyDown = false;
 			for(int i = 0; i < letterKeyDown.length; i++)
 			{
 				if (ListenerHelper.getText(e).equalsIgnoreCase(KevinChars.upalphabet[i] + ""))

@@ -20,6 +20,7 @@ public abstract class PhysicsSprite extends PositionSprite
 	private boolean comSet = false;
 	private double deltaX;
 	private double deltaY;
+	private boolean frozen;
 	public PhysicsSprite ()
 	{
 		lastUpdate = System.currentTimeMillis();
@@ -44,29 +45,32 @@ public abstract class PhysicsSprite extends PositionSprite
 	}
 	public void update()
 	{
-		long millisDelta = System.currentTimeMillis() - lastUpdate;
-		double timeMult = (millisDelta+0.0)/(1000+0.0);
-		sumForces();
-		double vXComp = getNetVelMagnitude() * Math.cos(getNetVelDir());
-		double vYComp = getNetVelMagnitude() * Math.sin(getNetVelDir());
-		double aXComp = getNetAccelMagnitude() * Math.cos(getNetAccelDir());
-		double aYComp = getNetAccelMagnitude() * Math.sin(getNetAccelDir());
-		vXComp += aXComp * timeMult;
-		vYComp += aYComp * timeMult;
-		setNetVelMagnitude(Math.sqrt(vXComp*vXComp + vYComp*vYComp));
-		setNetVelDir(Math.atan2(vYComp, vXComp));
-		
-		double magmult = timeMult * getSpeedMult();
-		deltaX += vXComp * magmult;
-		deltaY += vYComp * magmult;
-		
-		int moveX = (int) Math.round(deltaX);
-		int moveY = (int) Math.round(deltaY);
-		deltaX -= moveX;
-		deltaY -= moveY;
-		this.setX(this.getX() + moveX);
-		this.setY(this.getY() - moveY);
-		
+		if(!this.isFrozen())
+		{
+			long millisDelta = System.currentTimeMillis() - lastUpdate;
+
+			double timeMult = (millisDelta+0.0)/(1000+0.0);
+			sumForces();
+			double vXComp = getNetVelMagnitude() * Math.cos(getNetVelDir());
+			double vYComp = getNetVelMagnitude() * Math.sin(getNetVelDir());
+			double aXComp = getNetAccelMagnitude() * Math.cos(getNetAccelDir());
+			double aYComp = getNetAccelMagnitude() * Math.sin(getNetAccelDir());
+			vXComp += aXComp * timeMult;
+			vYComp += aYComp * timeMult;
+			setNetVelMagnitude(Math.sqrt(vXComp*vXComp + vYComp*vYComp));
+			setNetVelDir(Math.atan2(vYComp, vXComp));
+
+			double magmult = timeMult * getSpeedMult();
+			deltaX += vXComp * magmult;
+			deltaY += vYComp * magmult;
+
+			int moveX = (int) Math.round(deltaX);
+			int moveY = (int) Math.round(deltaY);
+			deltaX -= moveX;
+			deltaY -= moveY;
+			this.setX(this.getX() + moveX);
+			this.setY(this.getY() - moveY);
+		}
 		lastUpdate = System.currentTimeMillis();
 	}
 	public ArrayList<Force> getForces()
@@ -141,5 +145,11 @@ public abstract class PhysicsSprite extends PositionSprite
 	}
 	public void setNetVelDir(double netVelDir) {
 		this.netVelDir = netVelDir;
+	}
+	public boolean isFrozen() {
+		return frozen;
+	}
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
 	}
 }

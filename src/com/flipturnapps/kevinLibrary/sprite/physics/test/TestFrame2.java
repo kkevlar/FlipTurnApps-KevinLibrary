@@ -7,21 +7,23 @@ import javax.swing.JFrame;
 
 import com.flipturnapps.kevinLibrary.sprite.SpritePanel;
 import com.flipturnapps.kevinLibrary.sprite.physics.GravitationalForce;
+import com.flipturnapps.kevinLibrary.sprite.physics.PhysicsSprite;
 
 public class TestFrame2 extends JFrame
 {
 
 	
 	private SpritePanel panel;
-	private ArrayList<Sprite> testSprites;
+	private ArrayList<GravitySprite> testSprites;
 	
 	public TestFrame2() throws HeadlessException 
 	{
-		panel = new SpritePanel();
-		testSprites = new ArrayList<Sprite>();
-		for (int i = 0; i < 2; i++)
+		testSprites = new ArrayList<GravitySprite>();
+		panel = new PhysicsSpritePanel(testSprites);
+		GravitationalForce.setGravitationalConstant(50);
+		for (int i = 0; i < 0; i++)
 		{
-			Sprite sprite = new Sprite();
+			GravitySprite sprite = new GravitySprite();
 			testSprites.add(sprite);
 			panel.add(sprite);
 		}
@@ -31,10 +33,7 @@ public class TestFrame2 extends JFrame
 			{
 				if(x > y)
 				{
-					GravitationalForce force = new GravitationalForce(testSprites.get(x), testSprites.get(y));
-					force.setGravitationalConstant(50);
-					testSprites.get(x).getForces().add(force);
-					testSprites.get(y).getForces().add(force);
+					GravitationalForce force = makeGForce(this.testSprites.get(x), this.testSprites.get(y));
 					force.setSprite(testSprites.get(x));
 					panel.add(force);
 					//System.out.println("hi");
@@ -46,6 +45,14 @@ public class TestFrame2 extends JFrame
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(400,400);
 		
+	}
+
+	public static GravitationalForce makeGForce(PhysicsSprite spriteX, PhysicsSprite spriteY) 
+	{
+		GravitationalForce force = new GravitationalForce(spriteX, spriteY);
+		spriteX.getForces().add(force);
+		spriteY.getForces().add(force);
+		return force;
 	}
 	
 	public static void main (String[] args)

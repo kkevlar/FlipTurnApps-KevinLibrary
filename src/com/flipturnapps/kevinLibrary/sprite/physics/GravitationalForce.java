@@ -4,7 +4,7 @@ public class GravitationalForce extends ForceSprite
 {
 	private PhysicsSprite major;
 	private PhysicsSprite minor;
-	private double gravitationalConstant = 1;
+	private static double gravitationalConstant = 1;
 
 	public GravitationalForce(PhysicsSprite major, PhysicsSprite minor) 
 	{
@@ -40,13 +40,13 @@ public class GravitationalForce extends ForceSprite
 		}
 		return Math.atan2(-deltaY(), deltaX()) + mod;
 	}
-	public double getGravitationalConstant() 
+	public static double getGravitationalConstant() 
 	{
 		return gravitationalConstant;
 	}
-	public void setGravitationalConstant(double gravitationalConstant) 
+	public static void setGravitationalConstant(double g) 
 	{
-		this.gravitationalConstant = gravitationalConstant;
+		gravitationalConstant = g;
 	}
 	
 
