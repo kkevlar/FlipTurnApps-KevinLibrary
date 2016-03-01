@@ -1,10 +1,10 @@
 package com.flipturnapps.kevinLibrary.sprite.physics;
 
-public class GravitationalForce implements Force 
+public class GravitationalForce extends ForceSprite
 {
 	private PhysicsSprite major;
 	private PhysicsSprite minor;
-	private double gravitationalConstant = 2;
+	private double gravitationalConstant = 1;
 
 	public GravitationalForce(PhysicsSprite major, PhysicsSprite minor) 
 	{
@@ -17,7 +17,7 @@ public class GravitationalForce implements Force
 		double numerator = gravitationalConstant * major.getMass() * minor.getMass();
 		double x = deltaX(); 
 		double y = deltaY(); 
-		double denominator = x*x+y*y;
+		double denominator = Math.max(x*x+y*y,5000);
 		return numerator/denominator;
 	}
 	private double deltaY() 
@@ -32,10 +32,13 @@ public class GravitationalForce implements Force
 	@Override
 	public double getDirection(PhysicsSprite s)
 	{
-		double mod = Math.PI;
-		if (s != major)
-			mod += Math.PI;
-		return Math.atan2(deltaY(), deltaX()) + mod;
+		double mod = 0;
+		if (s == major)
+		{
+			mod -= Math.PI;
+			//System.out.println("hi");
+		}
+		return Math.atan2(-deltaY(), deltaX()) + mod;
 	}
 	public double getGravitationalConstant() 
 	{

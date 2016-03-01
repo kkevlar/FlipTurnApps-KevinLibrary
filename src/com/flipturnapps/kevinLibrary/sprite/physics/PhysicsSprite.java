@@ -14,15 +14,18 @@ public abstract class PhysicsSprite extends PositionSprite
 	private double netVelDir;
 	private long lastUpdate;
 	private double speedMult = 1;
-	private double mass;
+	private double mass = 1;
 	private double comX;
 	private double comY;
 	private boolean comSet = false;
+	private double deltaX;
+	private double deltaY;
 	public PhysicsSprite ()
 	{
 		lastUpdate = System.currentTimeMillis();
 		System.out.println((Toolkit.getDefaultToolkit().getScreenResolution())+"");
 		speedMult = Toolkit.getDefaultToolkit().getScreenResolution() * 12 * 3;
+		this.setOutsideAllowed(true);
 	}
 	private void sumForces()
 	{
@@ -34,7 +37,7 @@ public abstract class PhysicsSprite extends PositionSprite
 			double magnitude = force.getMagnitude(this);
 			double direction = force.getDirection(this);
 			xComp += magnitude * Math.cos(direction);
-			yComp -= magnitude * Math.sin(direction);
+			yComp += magnitude * Math.sin(direction);
 		}
 		setNetAccelMagnitude(Math.sqrt(xComp*xComp + yComp*yComp)/this.getMass());
 		setNetAccelDir(Math.atan2(yComp, xComp));
@@ -52,7 +55,18 @@ public abstract class PhysicsSprite extends PositionSprite
 		vYComp += aYComp * timeMult;
 		setNetVelMagnitude(Math.sqrt(vXComp*vXComp + vYComp*vYComp));
 		setNetVelDir(Math.atan2(vYComp, vXComp));
-		this.vectorMove(getNetVelDir(), getNetVelMagnitude() * timeMult * getSpeedMult());
+		
+		double magmult = timeMult * getSpeedMult();
+		deltaX += vXComp * magmult;
+		deltaY += vYComp * magmult;
+		
+		int moveX = (int) Math.round(deltaX);
+		int moveY = (int) Math.round(deltaY);
+		deltaX -= moveX;
+		deltaY -= moveY;
+		this.setX(this.getX() + moveX);
+		this.setY(this.getY() - moveY);
+		
 		lastUpdate = System.currentTimeMillis();
 	}
 	public ArrayList<Force> getForces()
@@ -102,7 +116,7 @@ public abstract class PhysicsSprite extends PositionSprite
 	{
 		super.setHeight(h);
 		if(!comSet && h != 0)
-			comX = (h+0.0)/(2+0.0);
+			comY = (h+0.0)/(2+0.0);
 	}
 	public double getNetAccelMagnitude() {
 		return netAccelMagnitude;
