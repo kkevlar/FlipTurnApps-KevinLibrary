@@ -112,11 +112,6 @@ public class PhysicsSpritePanel extends SpritePanel
 				sprite.setNetVelDir(sprite.getNetAccelDir() + Math.PI * .5);
 			}
 		}
-		if(shiftKeyDown() && MouseForce.getGravitationalConstant() != 0)
-		{
-			mouseStore = MouseForce.getGravitationalConstant();
-			MouseForce.setGravitationalConstant(0);
-		}
 		if(this.letterKeyDown()[ArrayHelper.indexof('s',KevinChars.lowalphabet)]  && System.currentTimeMillis() - lastSpace > 500)
 		{
 			lastSpace = System.currentTimeMillis();
@@ -125,10 +120,6 @@ public class PhysicsSpritePanel extends SpritePanel
 				GravitySprite sprite = sprites.get(i);
 				sprite.setNetVelMagnitude(sprite.getNetVelMagnitude() * .5);
 			}
-		}
-		if(false && !shiftKeyDown() && MouseForce.getGravitationalConstant() == 0)
-		{
-			MouseForce.setGravitationalConstant(mouseStore);
 		}
 	}
 	private class ArrowSprite extends Sprite
