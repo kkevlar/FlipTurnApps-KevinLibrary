@@ -5,11 +5,13 @@ public class GravitationalForce extends ForceSprite
 	private PhysicsSprite major;
 	private PhysicsSprite minor;
 	private static double gravitationalConstant = 1;
+	private int minDenom;
 
 	public GravitationalForce(PhysicsSprite major, PhysicsSprite minor) 
 	{
 		this.major = major;
 		this.minor = minor;
+		setMinDenom(5000);
 	}
 	@Override
 	public double getMagnitude(PhysicsSprite s)
@@ -17,7 +19,9 @@ public class GravitationalForce extends ForceSprite
 		double numerator = gravitationalConstant * major.getMass() * minor.getMass();
 		double x = deltaX(); 
 		double y = deltaY(); 
-		double denominator = Math.max(x*x+y*y,5000);
+		
+		double denominator = Math.max(x*x+y*y,getMinDenom());
+		
 		return numerator/denominator;
 	}
 	private double deltaY() 
@@ -47,6 +51,12 @@ public class GravitationalForce extends ForceSprite
 	public static void setGravitationalConstant(double g) 
 	{
 		gravitationalConstant = g;
+	}
+	public int getMinDenom() {
+		return minDenom;
+	}
+	public void setMinDenom(int minDenom) {
+		this.minDenom = minDenom;
 	}
 	
 
