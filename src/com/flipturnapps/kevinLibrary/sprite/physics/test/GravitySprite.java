@@ -2,6 +2,14 @@ package com.flipturnapps.kevinLibrary.sprite.physics.test;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 
 import com.flipturnapps.kevinLibrary.sprite.SpritePanel;
 import com.flipturnapps.kevinLibrary.sprite.physics.Force;
@@ -13,13 +21,15 @@ public class GravitySprite extends PhysicsSprite implements Force
 	private int id;
 	private Color color;
 	private long lastResize;
+	private long lastSound;
+	private static double constant;
 	public GravitySprite()
 	{
 		this.id = idCount++;
 		this.setMass(Math.random() * 20 + 1);
 		this.setX(50 *(id+1));
 		this.setY(50 * (id+1));
-		//this.getForces().add(this);
+		this.getForces().add(this);
 		this.getForces().add(new MouseForce());
 		//this.setNetVelDir(Math.PI*.5);
 		this.setOutsideAllowed(true);
@@ -39,7 +49,7 @@ public class GravitySprite extends PhysicsSprite implements Force
 	}
 	public double getMagnitude(PhysicsSprite s)
 	{
-		return s.getMass() * 0;
+		return s.getMass() * getConstant();
 	}
 
 	@Override
@@ -88,9 +98,49 @@ public class GravitySprite extends PhysicsSprite implements Force
 		g.fillOval(x, y, width, height);
 		
 	}
-	private void cutSpeed() {
+	private void cutSpeed()
+	{
 		this.setNetVelMagnitude(this.getNetVelMagnitude() * .9);
-		
+		long timeDelta = System.currentTimeMillis() - lastSound;
+		if(timeDelta  > 50)
+		{
+			try {
+				lastSound = System.currentTimeMillis();
+				File yourFile = new File("bounce.wav");
+				AudioInputStream stream;
+				AudioFormat format;
+				DataLine.Info info;
+				Clip clip;
+
+				stream = AudioSystem.getAudioInputStream(yourFile);
+				format = stream.getFormat();
+				info = new DataLine.Info(Clip.class, format);
+				clip = AudioSystem.getClip();
+				clip.open(stream);
+				FloatControl gainControl = 
+						(FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+				double num = Math.pow(this.getNetVelMagnitude(),1.5);
+				double div = -1/num;
+				gainControl.setValue((float) Math.max(div, -25)); // Reduce volume by 10 decibels.
+
+				clip.start();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		else
+		{
+			lastSound = System.currentTimeMillis();
+		}
+
+	}
+	public static double getConstant() {
+		return constant;
+	}
+	public static void setConstant(double constant) {
+		GravitySprite.constant = constant;
 	}
 	
 	

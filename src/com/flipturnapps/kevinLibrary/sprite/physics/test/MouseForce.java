@@ -11,7 +11,7 @@ public class MouseForce implements Force
 	{
 		try
 		{
-			double numerator = gravitationalConstant * s.getMass() * 500;
+			double numerator = gravitationalConstant * s.getMass() * 50;
 			double x = deltaX(s); 
 			double y = deltaY(s); 
 			double denominator = Math.max(x*x+y*y,1000);

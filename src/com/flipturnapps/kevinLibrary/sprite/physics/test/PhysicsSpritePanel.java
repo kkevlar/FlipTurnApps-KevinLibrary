@@ -13,6 +13,7 @@ import com.flipturnapps.kevinLibrary.helper.KevinChars;
 import com.flipturnapps.kevinLibrary.sprite.Sprite;
 import com.flipturnapps.kevinLibrary.sprite.SpritePanel;
 import com.flipturnapps.kevinLibrary.sprite.physics.GravitationalForce;
+import com.flipturnapps.kevinLibrary.sprite.physics.PhysicsSprite;
 
 public class PhysicsSpritePanel extends SpritePanel 
 {
@@ -22,6 +23,8 @@ public class PhysicsSpritePanel extends SpritePanel
 	private ArrayList<GravitySprite> sprites;
 	private long lastSpace;
 	private double mouseStore;
+	private long bounceStart;
+	private double gravStore;
 
 	public PhysicsSpritePanel(ArrayList<GravitySprite> testSprites)
 	{
@@ -112,10 +115,26 @@ public class PhysicsSpritePanel extends SpritePanel
 				sprite.setNetVelDir(sprite.getNetAccelDir() + Math.PI * .5);
 			}
 		}
-		if(shiftKeyDown() && MouseForce.getGravitationalConstant() != 0)
+		if(shiftKeyDown() && GravitySprite.getConstant() == 0)
 		{
+			bounceStart = System.currentTimeMillis();
 			mouseStore = MouseForce.getGravitationalConstant();
-			MouseForce.setGravitationalConstant(0);
+				MouseForce.setGravitationalConstant(0);
+			gravStore = GravitationalForce.getGravitationalConstant();
+					GravitationalForce.setGravitationalConstant(0);
+			GravitySprite.setConstant(3);
+			for(int i = 0; i < sprites.size(); i++)
+			{
+				GravitySprite sprite = sprites.get(i);
+				sprite.setFrozen(false);
+			}
+		}
+		if(System.currentTimeMillis() - bounceStart > 4000 && bounceStart != 0)
+		{
+			MouseForce.setGravitationalConstant(mouseStore);
+			GravitationalForce.setGravitationalConstant(gravStore);
+			GravitySprite.setConstant(0);
+			bounceStart = 0;
 		}
 		if(this.letterKeyDown()[ArrayHelper.indexof('s',KevinChars.lowalphabet)]  && System.currentTimeMillis() - lastSpace > 500)
 		{
@@ -125,10 +144,6 @@ public class PhysicsSpritePanel extends SpritePanel
 				GravitySprite sprite = sprites.get(i);
 				sprite.setNetVelMagnitude(sprite.getNetVelMagnitude() * .5);
 			}
-		}
-		if(false && !shiftKeyDown() && MouseForce.getGravitationalConstant() == 0)
-		{
-			MouseForce.setGravitationalConstant(mouseStore);
 		}
 	}
 	private class ArrowSprite extends Sprite
