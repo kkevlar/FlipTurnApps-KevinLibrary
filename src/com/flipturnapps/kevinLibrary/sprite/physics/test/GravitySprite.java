@@ -61,17 +61,22 @@ public class GravitySprite extends PhysicsSprite implements Force
 	@Override
 	protected void drawShape(Graphics g, SpritePanel s, int x, int y, int width, int height)
 	{
-		if(this.getRightOn() && System.currentTimeMillis() - lastResize > 100)
+		if(this.getRightOn() && !this.getPanel().controlKeyDown() && !this.getPanel().letterKeyDown()[0] && System.currentTimeMillis() - lastResize > 100)
 		{
 			this.lastResize = System.currentTimeMillis();
 			this.setFrozen(!this.isFrozen());
 			this.setNetVelMagnitude(0);
 		}
-		if(this.getCenterOn() && System.currentTimeMillis() - lastResize > 100)
+		if(this.getMouseIn() && this.getPanel().controlKeyDown() && System.currentTimeMillis() - lastResize > 100)
 		{
 			this.lastResize = System.currentTimeMillis();
 			double change = (this.getCenterY()- this.getPanel().getMouseY())/10;
 			this.setMass(Math.abs(this.getMass() + change));
+		}
+		if(this.getMouseIn() && this.getPanel().letterKeyDown()[0] && System.currentTimeMillis() - lastResize > 100)
+		{
+			this.lastResize = System.currentTimeMillis();
+			this.setNetVelMagnitude((this.getNetVelMagnitude()+0.01)*20);
 		}
 		if (y + height > this.getPanelHeight() && Math.sin(this.getNetVelDir()) < 0)
 		{
@@ -124,6 +129,10 @@ public class GravitySprite extends PhysicsSprite implements Force
 				gainControl.setValue((float) Math.max(div, -25)); // Reduce volume by 10 decibels.
 
 				clip.start();
+				
+				float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), new float[3]);
+				hsb[0] += .01;
+				//color = new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
 			}
 			catch (Exception e) {
 				e.printStackTrace();

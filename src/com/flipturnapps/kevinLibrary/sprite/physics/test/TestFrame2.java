@@ -40,7 +40,7 @@ public class TestFrame2 extends JFrame
 				}
 			}
 		}
-		
+		  
 		this.getContentPane().add(panel);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(400,400);

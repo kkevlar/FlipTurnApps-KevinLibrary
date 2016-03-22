@@ -74,11 +74,11 @@ public class PhysicsSpritePanel extends SpritePanel
 		}
 		if(this.downKeyDown() && this.controlKeyDown())
 		{
-			MouseForce.setGravitationalConstant(MouseForce.getGravitationalConstant() - 1);
+			MouseForce.setGravitationalConstant(MouseForce.getGravitationalConstant() - .25);
 		}
 		if(this.upKeyDown() && this.controlKeyDown())
 		{
-			MouseForce.setGravitationalConstant(MouseForce.getGravitationalConstant() + 1);
+			MouseForce.setGravitationalConstant(MouseForce.getGravitationalConstant() + .25);
 		}
 		
 		if(this.leftKeyDown() && !this.controlKeyDown())
@@ -129,7 +129,7 @@ public class PhysicsSpritePanel extends SpritePanel
 				sprite.setFrozen(false);
 			}
 		}
-		if(System.currentTimeMillis() - bounceStart > 4000 && bounceStart != 0)
+		if(System.currentTimeMillis() - bounceStart > 10000 && bounceStart != 0)
 		{
 			MouseForce.setGravitationalConstant(mouseStore);
 			GravitationalForce.setGravitationalConstant(gravStore);
@@ -138,11 +138,20 @@ public class PhysicsSpritePanel extends SpritePanel
 		}
 		if(this.letterKeyDown()[ArrayHelper.indexof('s',KevinChars.lowalphabet)]  && System.currentTimeMillis() - lastSpace > 500)
 		{
-			lastSpace = System.currentTimeMillis();
+			//lastSpace = System.currentTimeMillis();
 			for(int i = 0; i < sprites.size(); i++)
 			{
 				GravitySprite sprite = sprites.get(i);
 				sprite.setNetVelMagnitude(sprite.getNetVelMagnitude() * .5);
+			}
+		}
+		if(this.letterKeyDown()[3]  && System.currentTimeMillis() - lastSpace > 500)
+		{
+			//lastSpace = System.currentTimeMillis();
+			for(int i = 0; i < sprites.size(); i++)
+			{
+				GravitySprite sprite = sprites.get(i);
+				sprite.setNetVelMagnitude(sprite.getNetVelMagnitude() * 2);
 			}
 		}
 	}
