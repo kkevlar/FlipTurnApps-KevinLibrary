@@ -43,7 +43,7 @@ public abstract class DependentSocketReader extends BufferedReader {
 				}
 				if(read != null && shouldRead())
 					readString(read);
-				ThreadHelper.sleep(75);
+				//ThreadHelper.sleep(75);
 			}
 
 		}

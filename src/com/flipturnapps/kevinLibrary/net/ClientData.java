@@ -23,7 +23,7 @@ public abstract class ClientData
 	public ClientData(Socket socket, KServer<?> server) throws IOException
 	{
 		this.socket = socket;
-		this.reader = new ClientReader(socket);
+		this.setReader(new ClientReader(socket));
 		this.writer = new FlushWriter(socket.getOutputStream());
 		this.setServer(server);
 		this.setRegularClient(true);
@@ -105,8 +105,8 @@ public abstract class ClientData
 		getServer().clientDisconnected(this);
 		writer.println(">dis");
 		writer.close();
-		reader.stop();
-		reader.close();
+		getReader().stop();
+		getReader().close();
 		socket.close();
 		this.setConnected(false);
 		
@@ -144,6 +144,12 @@ public abstract class ClientData
 	}
 	protected void setServer(KServer<?> server) {
 		this.server = server;
+	}
+	public DependentSocketReader getReader() {
+		return reader;
+	}
+	public void setReader(DependentSocketReader reader) {
+		this.reader = reader;
 	}
 	
 	
