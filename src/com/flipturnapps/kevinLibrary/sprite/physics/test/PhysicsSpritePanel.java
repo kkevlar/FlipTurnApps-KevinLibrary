@@ -121,6 +121,26 @@ public class PhysicsSpritePanel extends SpritePanel
 				sprite.setNetVelMagnitude(sprite.getNetVelMagnitude() * .5);
 			}
 		}
+		if(this.letterKeyDown()[ArrayHelper.indexof('o',KevinChars.lowalphabet)]  && System.currentTimeMillis() - lastSpace > 500)
+		{
+
+			lastSpace = System.currentTimeMillis();
+			for(int x = 0; x < sprites.size(); x++)
+			{
+				GravitySprite sprite = sprites.get(x);
+				sprite.setNetVelDir(sprite.getNetAccelDir() + Math.PI * .5);
+				double sum = 0;
+				for (int y = 0; y < sprites.size(); y++) 
+				{
+					if(x!=y)
+						sum += sprite.distanceTo(sprites.get(y));
+				}
+				double avg = sum / (sprites.size()-1);
+				double velo = Math.sqrt(sprite.getNetAccelMagnitude() * avg * 0.001);
+				sprite.setNetVelMagnitude(velo);
+			}
+		}
+		
 	}
 	private class ArrowSprite extends Sprite
 	{
