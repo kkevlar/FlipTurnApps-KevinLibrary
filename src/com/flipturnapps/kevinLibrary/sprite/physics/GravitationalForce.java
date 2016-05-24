@@ -1,6 +1,6 @@
 package com.flipturnapps.kevinLibrary.sprite.physics;
 
-public class GravitationalForce extends ForceSprite
+public class GravitationalForce extends ForceVectorSprite
 {
 	private PhysicsSprite major;
 	private PhysicsSprite minor;

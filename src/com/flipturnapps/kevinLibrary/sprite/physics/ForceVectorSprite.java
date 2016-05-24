@@ -8,12 +8,12 @@ import javax.swing.JComponent;
 import com.flipturnapps.kevinLibrary.sprite.Sprite;
 import com.flipturnapps.kevinLibrary.sprite.SpritePanel;
 
-public abstract class ForceSprite extends Sprite implements Force
+public abstract class ForceVectorSprite extends Sprite implements Force
 {
 
 	private Color color;
 	private PhysicsSprite sprite;
-	public ForceSprite() 
+	public ForceVectorSprite() 
 	{
 		this.setColor(Color.black);
 	}
