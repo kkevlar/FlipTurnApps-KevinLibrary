@@ -89,10 +89,18 @@ public abstract class PhysicsSprite extends PositionSprite
 			int moveY = (int) Math.round(deltaY);
 			deltaX -= moveX;
 			deltaY -= moveY;
-			this.setX(this.getX() + moveX);
-			this.setY(this.getY() - moveY);
+			
+			
+			changeXBy(moveX);
+			changeYBy(-moveY);
 		}
 		lastUpdate = System.currentTimeMillis();
+	}
+	protected void changeYBy(int moveY) {
+		this.setY(this.getY() + moveY);
+	}
+	protected void changeXBy(int moveX) {
+		this.setX(this.getX() + moveX);
 	}
 	public ArrayList<Force> getForces()
 	{

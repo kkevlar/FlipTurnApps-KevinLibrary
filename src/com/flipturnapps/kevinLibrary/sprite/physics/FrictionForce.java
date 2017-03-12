@@ -15,7 +15,7 @@ public class FrictionForce implements Force
 	@Override
 	public double getMagnitude(PhysicsSprite s) 
 	{
-		if(this.isEnabled())
+		if(this.isEnabled() && (Math.cos(s.getNetVelDir() + Math.PI)  != 0) && Math.abs(Math.cos(s.getNetVelDir()) * s.getNetVelMagnitude()) > 0.00001)
 			if(this.isNormalForceDirIsY())
 				return s.getyNormalForce() * this.getCoefficient();
 			else
@@ -29,7 +29,7 @@ public class FrictionForce implements Force
 	{
 		if(this.isEnabled())
 			if(this.isNormalForceDirIsY())
-				if(Math.cos(s.getNetVelDir() + Math.PI) < 0)
+				if(Math.cos(s.getNetVelDir() + Math.PI) <= 0)
 					return Math.PI;
 				else
 					return 0;

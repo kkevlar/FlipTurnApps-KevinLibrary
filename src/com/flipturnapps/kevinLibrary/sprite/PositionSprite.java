@@ -19,7 +19,9 @@ public abstract class PositionSprite extends Sprite
 	public static final int RECT = 1;
 	public static final int CIRCLE = 0;
 	private boolean solid = false;
-	private boolean obeyScrolling = true;
+	private boolean obeyScrolling = false;
+	private int lastScrollX;
+	private int lastScrollY;
 	
 	
 	public PositionSprite() {
@@ -157,15 +159,18 @@ public abstract class PositionSprite extends Sprite
 				setX(0,true);
 			
 		}
-		int dX = 0;
-		int dY = 0;
 		if(this.willObeyScrolling())
 		{
-			dX = s.getxOffset();
-			dY = s.getyOffset();
+			int dX = s.getxOffset() - lastScrollX;
+			int dY = s.getyOffset() - lastScrollY;
+		
+			this.setX(this.getX() - dX);
+			lastScrollX = s.getxOffset();
+			this.setY(this.getY() - dY);
+			lastScrollY = s.getyOffset();
 		}
 		
-		drawShape(g,s,getX()-dX,getY()-dY,getWidth(),getHeight());
+		drawShape(g,s,getX(),getY(),getWidth(),getHeight());
 		
 	}
 	protected abstract void drawShape(Graphics g, SpritePanel s, int x, int y, int width, int height);
