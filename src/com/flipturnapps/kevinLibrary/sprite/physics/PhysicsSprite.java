@@ -21,10 +21,13 @@ public abstract class PhysicsSprite extends PositionSprite
 	private double deltaX;
 	private double deltaY;
 	private boolean frozen;
-	public PhysicsSprite ()
+	private boolean xNormaled = false;
+	private boolean yNormaled = false;
+	private double xNormalForce = 0;
+	private double yNormalForce = 0;
+ 	public PhysicsSprite()
 	{
 		lastUpdate = System.currentTimeMillis();
-		//System.out.println((Toolkit.getDefaultToolkit().getScreenResolution())+"");
 		speedMult = Toolkit.getDefaultToolkit().getScreenResolution() * 12 * 3;
 		this.setOutsideAllowed(true);
 	}
@@ -40,6 +43,24 @@ public abstract class PhysicsSprite extends PositionSprite
 			xComp += magnitude * Math.cos(direction);
 			yComp += magnitude * Math.sin(direction);
 		}
+		
+		//If X has normal force applied, then sum of forces will be zero
+		if(this.isxNormaled())
+		{
+			this.setxNormalForce(-xComp);
+			xComp = 0;
+		}
+		else
+			this.setxNormalForce(0);
+		
+		if(this.isyNormaled())
+		{
+			this.setyNormalForce(-yComp);
+			yComp = 0;
+		}
+		else
+			this.setyNormalForce(0);
+		
 		setNetAccelMagnitude(Math.sqrt(xComp*xComp + yComp*yComp)/this.getMass());
 		setNetAccelDir(Math.atan2(yComp, xComp));
 	}
@@ -151,5 +172,29 @@ public abstract class PhysicsSprite extends PositionSprite
 	}
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
+	}
+	public boolean isxNormaled() {
+		return xNormaled;
+	}
+	public void setxNormaled(boolean xNormaled) {
+		this.xNormaled = xNormaled;
+	}
+	public boolean isyNormaled() {
+		return yNormaled;
+	}
+	public void setyNormaled(boolean yNormaled) {
+		this.yNormaled = yNormaled;
+	}
+	public double getxNormalForce() {
+		return xNormalForce;
+	}
+	private void setxNormalForce(double xNormalForce) {
+		this.xNormalForce = xNormalForce;
+	}
+	public double getyNormalForce() {
+		return yNormalForce;
+	}
+	private void setyNormalForce(double yNormalForce) {
+		this.yNormalForce = yNormalForce;
 	}
 }
