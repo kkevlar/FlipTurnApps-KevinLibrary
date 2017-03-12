@@ -2,56 +2,69 @@ package com.flipturnapps.kevinLibrary.sprite;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.flipturnapps.kevinLibrary.gui.KJPanel;
 import com.flipturnapps.kevinLibrary.helper.KevinColor;
 
-public class SpritePanel extends KJPanel {
-	/**
-	 * 
-	 */
+public class SpritePanel extends KJPanel 
+{
 	private static final long serialVersionUID = -2069993305609211627L;
-	private ArrayList<Sprite> arr = new ArrayList<Sprite>();
-
-
-
-
-
+	private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+	
+	//offsets for scrolling. if the children posistionsprites choose to obey
+	private int xOffset;
+	private int yOffset;
 	public SpritePanel() 
 	{
 		super();
 		this.setBackground(KevinColor.kwhite);
 		
-	}
-
-	
+	}	
 	public ArrayList<Sprite> getSprites()
 	{
-		return arr;
+		orderSprites();
+		return sprites;
+		
 	}
 	public void add(Sprite i)
 	{
-		arr.add(i);
+		sprites.add(i);
 		if (this != null)
 			i.setPanel(this);
+		orderSprites();
 	}
 	public void remove(Sprite i)
 	{
-		arr.remove(i);
+		sprites.remove(i);
+		orderSprites();
 	}
 	public void add(Sprite i, int layer)
 	{
-		arr.add(layer,i);
+		if(i != null)
+		{
+			i.setLayer(layer);
+			sprites.add(i);
+		}
 		if (this != null)
 			i.setPanel(this);
+		orderSprites();
 	}
-
-
 	public void refresh()
 	{
-
-
 		this.repaint();
+	}
+	
+	private void orderSprites()
+	{
+		Collections.sort(sprites, new Comparator<Sprite>() 
+		{
+			public int compare(Sprite s1, Sprite s2)
+			{
+				return (1) * ( s1.getLayer() - s2.getLayer() );
+			}
+		});
 	}
 
 
@@ -60,51 +73,37 @@ public class SpritePanel extends KJPanel {
 	{
 		g.setColor(getBackground());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		ArrayList<Sprite> s = new ArrayList<Sprite>();
-		for (int i = 0; i < arr.size(); i++)
+		
+		for (int i = 0; i < sprites.size(); i++)
 		{
-			s.add(arr.get(i));
-		}
-		ArrayList<Sprite> paintSprites = new ArrayList<Sprite>();
-		while(s.size() > 0)
-		{
-			int bestIndex = -1;
-			int bestLayer = 0;
-			boolean gotBestLayer = false;
-			for(int i = 0; i < s.size(); i++)
-			{
-				if(s.get(i).getLayer() < bestLayer || gotBestLayer == false)
-				{
-					bestLayer = s.get(i).getLayer();
-					bestIndex = i;
-					gotBestLayer = true;
-					
-				}
-				
-			}
-			if(bestLayer != -1 && gotBestLayer == true)
-			{
-				paintSprites.add(s.get(bestIndex));
-				s.remove(bestIndex);
-			}
-		}
-		for (int i = 0; i < paintSprites.size(); i++)
-		{
-			if (paintSprites.get(i).isVisible())
-				paintSprites.get(i).display(g, this);
-
+			if (sprites.get(i).isVisible())
+				sprites.get(i).display(g, this);
 		}
 
 	}
+	
+	
 	public void deleteSprites()
 	{
-		arr = new ArrayList<Sprite>();
+		sprites = new ArrayList<Sprite>();
 
 	}
 	public void removeSprites()
 	{
-		arr = new ArrayList<Sprite>();
+		sprites = new ArrayList<Sprite>();
 
+	}
+	public int getxOffset() {
+		return xOffset;
+	}
+	public void setxOffset(int xOffset) {
+		this.xOffset = xOffset;
+	}
+	public int getyOffset() {
+		return yOffset;
+	}
+	public void setyOffset(int yOffset) {
+		this.yOffset = yOffset;
 	}
 	
 

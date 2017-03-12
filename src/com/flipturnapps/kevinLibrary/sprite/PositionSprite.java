@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 
-public abstract class PositionSprite extends Sprite {
-	
-	
-	/**
-	 * 
-	 */
+public abstract class PositionSprite extends Sprite 
+{
 	private static final long serialVersionUID = 5318288985690748989L;
-	private boolean outsideAllowed;
+	private boolean outsideAllowed = true;
 	private int x = 0;
 	private int y = 0;
 	private int width = 0;
@@ -23,6 +19,8 @@ public abstract class PositionSprite extends Sprite {
 	public static final int RECT = 1;
 	public static final int CIRCLE = 0;
 	private boolean solid = false;
+	private boolean obeyScrolling = true;
+	
 	
 	public PositionSprite() {
 		super();
@@ -120,6 +118,7 @@ public abstract class PositionSprite extends Sprite {
 		return mouseIn;
 	}
 
+	@Deprecated
 	public void positionForScrolling(double xpos,double ypos, double scrollx, double scrolly, boolean centered)
 	{
 		if(centered)
@@ -158,7 +157,15 @@ public abstract class PositionSprite extends Sprite {
 				setX(0,true);
 			
 		}
-		drawShape(g,s,getX(),getY(),getWidth(),getHeight());
+		int dX = 0;
+		int dY = 0;
+		if(this.willObeyScrolling())
+		{
+			dX = s.getxOffset();
+			dY = s.getyOffset();
+		}
+		
+		drawShape(g,s,getX()-dX,getY()-dY,getWidth(),getHeight());
 		
 	}
 	protected abstract void drawShape(Graphics g, SpritePanel s, int x, int y, int width, int height);
@@ -368,6 +375,12 @@ public abstract class PositionSprite extends Sprite {
 	public void moveTowards(PositionSprite sprite, double magnitude)
 	{
 		this.vectorMove(this.angleTowardsCenterFromCenter(sprite), magnitude);
+	}
+	public boolean willObeyScrolling() {
+		return obeyScrolling;
+	}
+	public void setObeyScrolling(boolean obeyScrolling) {
+		this.obeyScrolling = obeyScrolling;
 	}
 	
 }
