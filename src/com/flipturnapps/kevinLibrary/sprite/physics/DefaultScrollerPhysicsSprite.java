@@ -11,8 +11,15 @@ public abstract class DefaultScrollerPhysicsSprite extends PhysicsSprite
 	
 	public void guessDimensions()
 	{
+		try
+		{
 		this.setScreenWidth(this.getPanel().getWidth());
 		this.setScreenHeight(this.getPanel().getHeight());
+		}
+		catch(Exception ex)
+		{
+			
+		}
 	}
 	public void moveToCenter()
 	{

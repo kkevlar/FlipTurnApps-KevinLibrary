@@ -21,10 +21,14 @@ public abstract class PhysicsSprite extends PositionSprite
 	private double deltaX;
 	private double deltaY;
 	private boolean frozen;
+	
+	//maybe will delete these
 	private boolean xNormaled = false;
 	private boolean yNormaled = false;
 	private double xNormalForce = 0;
 	private double yNormalForce = 0;
+	
+	
  	public PhysicsSprite()
 	{
 		lastUpdate = System.currentTimeMillis();
@@ -181,6 +185,13 @@ public abstract class PhysicsSprite extends PositionSprite
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
 	}
+	
+	public void add(Force f)
+	{
+		this.getForces().add(f);
+	}
+	
+//probs gonna delete
 	public boolean isxNormaled() {
 		return xNormaled;
 	}
