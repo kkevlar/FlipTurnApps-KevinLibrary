@@ -47,6 +47,8 @@ public abstract class DefaultScrollerPhysicsSprite extends PhysicsSprite
 			this.getPanel().setxOffset(this.getPanel().getxOffset() + amountOver);
 		}
 	}
+	
+	// TODO finish this method to make y scroll
 	protected void changeYBy(int dy)
 	{
 		//unfinished
