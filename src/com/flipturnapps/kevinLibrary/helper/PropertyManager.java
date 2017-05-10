@@ -16,6 +16,12 @@ public abstract class PropertyManager
 		map = new HashMap<String,String>();
 	}
 	
+	public PropertyManager(File file) throws IOException
+	{
+		super();
+		read(file);
+	}
+	
 	public abstract File getStorageDirectory();
 	public abstract String getFilename();
 	
@@ -26,8 +32,15 @@ public abstract class PropertyManager
 	
 	public void read() throws IOException
 	{
+		read(this.getSaveFile());
+	}
+	
+	public void read(File file) throws IOException
+	{
+		if(map == null)
+			map = new HashMap<String,String>();
 		map.clear();
-		BufferedReader reader = new BufferedReader(new FileReader(this.getSaveFile()));
+		BufferedReader reader = new BufferedReader(new FileReader(file));
 		while(true)
 		{
 			String line = reader.readLine();
